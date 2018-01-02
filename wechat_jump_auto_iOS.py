@@ -173,26 +173,31 @@ def find_piece_and_board(im):
 
 
 def main():
+    print('按下CTRL+C退出\n')
     while True:
-        pull_screenshot()
-        im = Image.open("./1.png")
+        try:
+            pull_screenshot()
+            im = Image.open("./1.png")
 
-        # 获取棋子和 board 的位置
-        piece_x, piece_y, board_x, board_y = find_piece_and_board(im)
-        ts = int(time.time())
-        print(ts, piece_x, piece_y, board_x, board_y)
-        if piece_x == 0:
-            return
+            # 获取棋子和 board 的位置
+            piece_x, piece_y, board_x, board_y = find_piece_and_board(im)
+            ts = int(time.time())
+            print(ts, piece_x, piece_y, board_x, board_y)
+            if piece_x == 0:
+                return
 
-        set_button_position(im)
+            set_button_position(im)
 
-        distance = math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2)
-        jump(distance)
+            distance = math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2)
+            jump(distance)
 
-        save_debug_creenshot(ts, im, piece_x, piece_y, board_x, board_y)
-        backup_screenshot(ts)
+            save_debug_creenshot(ts, im, piece_x, piece_y, board_x, board_y)
+            backup_screenshot(ts)
 
-        time.sleep(random.uniform(1, 1.1))   # 为了保证截图的时候应落稳了，多延迟一会儿
+            time.sleep(random.uniform(1, 1.1))   # 为了保证截图的时候应落稳了，多延迟一会儿
+        except KeyboardInterrupt:
+            sys.exit()
+
 
 
 if __name__ == '__main__':

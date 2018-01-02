@@ -218,20 +218,23 @@ def main():
     '''
     Debug.dump_device_info()
     check_screenshot()
-
+    print('按下CTRL+C退出\n')
     while True:
-        pull_screenshot()
-        im = Image.open('./autojump.png')
-        # 获取棋子和 board 的位置
-        piece_x, piece_y, board_x, board_y = find_piece_and_board(im)
-        ts = int(time.time())
-        print(ts, piece_x, piece_y, board_x, board_y)
-        set_button_position(im)
-        jump(math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2))
-        if debug_switch:
-            Debug.save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y)
-            Debug.backup_screenshot(ts)
-        time.sleep(1)   # 为了保证截图的时候应落稳了，多延迟一会儿
+        try:
+            pull_screenshot()
+            im = Image.open('./autojump.png')
+            # 获取棋子和 board 的位置
+            piece_x, piece_y, board_x, board_y = find_piece_and_board(im)
+            ts = int(time.time())
+            print(ts, piece_x, piece_y, board_x, board_y)
+            set_button_position(im)
+            jump(math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2))
+            if debug_switch:
+                Debug.save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y)
+                Debug.backup_screenshot(ts)
+            time.sleep(1)   # 为了保证截图的时候应落稳了，多延迟一会儿
+        except KeyboardInterrupt:
+            sys.exit()
 
 
 if __name__ == '__main__':
